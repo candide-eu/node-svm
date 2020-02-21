@@ -266,6 +266,6 @@ void NodeSvm::Init(Local<Object> exports){
     Nan::New<FunctionTemplate>(NodeSvm::GetModel));
 
     //constructor = Persistent<Function>::New(tpl->GetFunction());
-    exports->Set(Nan::New<String>("NodeSvm").ToLocalChecked(), tpl->GetFunction());
+    exports->Set(Nan::New<String>("NodeSvm").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
     constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
 }

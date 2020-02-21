@@ -1,6 +1,6 @@
 {
-  "name": "node-svm",
-  "version": "2.1.8",
+  "name": "@candide/node-svm-12-plus",
+  "version": "3.0.0",
   "description": "Support Vector Machine for nodejs",
   "main": "lib",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nicolaspanel/node-svm.git"
+    "url": "https://github.com/candide-eu/node-svm"
   },
   "keywords": [
     "svm",
@@ -25,9 +25,9 @@
   "author": "Nicolas Panel",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nicolaspanel/node-svm/issues"
+    "url": "https://github.com/candide-eu/node-svm/issues"
   },
-  "homepage": "https://github.com/nicolaspanel/node-svm",
+  "homepage": "https://github.com/candide-eu/node-svm",
   "dependencies": {
     "abbrev": "^1.0.5",
     "cardinal": "^0.4.4",

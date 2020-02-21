@@ -85,7 +85,7 @@ class NodeSvm : public Nan::ObjectWrap
             // check  classifer and its options
             Local<String> svm_type_name = Nan::New<String>("svmType").ToLocalChecked();
             assert(Nan::Has(obj, svm_type_name).FromJust());
-            svm_params->svm_type = Nan::Get(obj, svm_type_name).ToLocalChecked()->IntegerValue();
+            svm_params->svm_type = Nan::Get(obj, svm_type_name).ToLocalChecked()->IntegerValue(Nan::GetCurrentContext()).FromJust();
             assert(svm_params->svm_type == C_SVC ||
                    svm_params->svm_type == NU_SVC ||
                    svm_params->svm_type == ONE_CLASS ||
@@ -98,7 +98,7 @@ class NodeSvm : public Nan::ObjectWrap
 
                 Local<String> str_c = Nan::New<String>("c").ToLocalChecked();
                 assert(Nan::Has(obj, str_c).FromJust());
-                svm_params->C = Nan::Get(obj, str_c).ToLocalChecked()->NumberValue();
+                svm_params->C = Nan::Get(obj, str_c).ToLocalChecked()->NumberValue(Nan::GetCurrentContext()).FromJust();
             }
             if (svm_params->svm_type == NU_SVC ||
                 svm_params->svm_type == NU_SVR ||
@@ -107,7 +107,7 @@ class NodeSvm : public Nan::ObjectWrap
 
                 Local<String> str_nu = Nan::New<String>("nu").ToLocalChecked();
                 assert(Nan::Has(obj, str_nu).FromJust());
-                svm_params->nu = Nan::Get(obj, str_nu).ToLocalChecked()->NumberValue();
+                svm_params->nu = Nan::Get(obj, str_nu).ToLocalChecked()->NumberValue(Nan::GetCurrentContext()).FromJust();
                 assert(svm_params->nu > 0 &&
                        svm_params->nu <= 1);
             }
@@ -115,14 +115,14 @@ class NodeSvm : public Nan::ObjectWrap
 
                 Local<String> str_epsilon = Nan::New<String>("epsilon").ToLocalChecked();
                 assert(Nan::Has(obj, str_epsilon).FromJust());
-                svm_params->p = Nan::Get(obj, str_epsilon).ToLocalChecked()->NumberValue();
+                svm_params->p = Nan::Get(obj, str_epsilon).ToLocalChecked()->NumberValue(Nan::GetCurrentContext()).FromJust();
                 assert(svm_params->p >= 0);
             }
 
             // check kernel and its options
             Local<String> str_kernel_type = Nan::New<String>("kernelType").ToLocalChecked();
             assert(Nan::Has(obj, str_kernel_type).FromJust());
-            svm_params->kernel_type = Nan::Get(obj, str_kernel_type).ToLocalChecked()->IntegerValue();
+            svm_params->kernel_type = Nan::Get(obj, str_kernel_type).ToLocalChecked()->IntegerValue(Nan::GetCurrentContext()).FromJust();
             assert(svm_params->kernel_type == LINEAR ||
                    svm_params->kernel_type == POLY ||
                    svm_params->kernel_type == RBF ||
@@ -134,7 +134,7 @@ class NodeSvm : public Nan::ObjectWrap
                 Local<String> str_degree = Nan::New<String>("degree").ToLocalChecked();
 
                 assert(Nan::Has(obj, str_degree).FromJust());
-                svm_params->degree = Nan::Get(obj, str_degree).ToLocalChecked()->IntegerValue();
+                svm_params->degree = Nan::Get(obj, str_degree).ToLocalChecked()->IntegerValue(Nan::GetCurrentContext()).FromJust();
                 assert(svm_params->degree >= 0);
             }
             if (svm_params->kernel_type == POLY ||
@@ -144,7 +144,7 @@ class NodeSvm : public Nan::ObjectWrap
                 Local<String> str_gamma = Nan::New<String>("gamma").ToLocalChecked();
 
                 assert(Nan::Has(obj, str_gamma).FromJust());
-                svm_params->gamma = Nan::Get(obj, str_gamma).ToLocalChecked()->NumberValue();
+                svm_params->gamma = Nan::Get(obj, str_gamma).ToLocalChecked()->NumberValue(Nan::GetCurrentContext()).FromJust();
                 assert(svm_params->gamma >= 0);
             }
             if (svm_params->kernel_type == POLY ||
@@ -153,32 +153,32 @@ class NodeSvm : public Nan::ObjectWrap
                 Local<String> str_r = Nan::New<String>("r").ToLocalChecked();
 
                 assert(Nan::Has(obj, str_r).FromJust());
-                svm_params->coef0 = Nan::Get(obj, str_r).ToLocalChecked()->NumberValue();
+                svm_params->coef0 = Nan::Get(obj, str_r).ToLocalChecked()->NumberValue(Nan::GetCurrentContext()).FromJust();
             }
 
             // check training options
             Local<String> str_cache_size = Nan::New<String>("cacheSize").ToLocalChecked();
             svm_params->cache_size = Nan::Has(obj, str_cache_size).FromJust() ?
-                Nan::Get(obj, str_cache_size).ToLocalChecked()->NumberValue() :
+                Nan::Get(obj, str_cache_size).ToLocalChecked()->NumberValue(Nan::GetCurrentContext()).FromJust() :
                 100;
             assert(svm_params->cache_size > 0);
 
             Local<String> str_eps = Nan::New<String>("eps").ToLocalChecked();
             svm_params->eps = Nan::Has(obj, str_eps).FromJust() ?
-                Nan::Get(obj, str_eps).ToLocalChecked()->NumberValue() :
+                Nan::Get(obj, str_eps).ToLocalChecked()->NumberValue(Nan::GetCurrentContext()).FromJust() :
                 1e-3;
             assert(svm_params->eps > 0);
 
             Local<String> str_shrinking = Nan::New<String>("shrinking").ToLocalChecked();
             svm_params->shrinking =  // enabled by default
                 Nan::Has(obj, str_shrinking).FromJust() &&
-                !Nan::Get(obj, str_shrinking).ToLocalChecked()->BooleanValue() ? 0 : 1;
+                !Nan::Get(obj, str_shrinking).ToLocalChecked()->BooleanValue(Nan::GetCurrentContext()).FromJust() ? 0 : 1;
 
 
             Local<String> str_probability = Nan::New<String>("probability").ToLocalChecked();
             svm_params->probability =  // disabled by default
                 Nan::Has(obj, str_probability).FromJust() &&
-                Nan::Get(obj, str_probability).ToLocalChecked()->BooleanValue() ? 1 : 0;
+                Nan::Get(obj, str_probability).ToLocalChecked()->BooleanValue(Nan::GetCurrentContext()).FromJust() ? 1 : 0;
 
             if (svm_params->svm_type == ONE_CLASS){
                 assert(svm_params->probability == 0); // one-class SVM probability output not supported (yet)
@@ -193,7 +193,7 @@ class NodeSvm : public Nan::ObjectWrap
             assert(Nan::Has(obj, str_params).FromJust());
             assert(Nan::Get(obj, str_params).ToLocalChecked()->IsObject());
 
-            setParameters(Nan::Get(obj, str_params).ToLocalChecked()->ToObject());
+            setParameters(Nan::Get(obj, str_params).ToLocalChecked()->ToObject(Nan::GetCurrentContext()).ToLocalChecked());
             assert(params!=NULL);
             struct svm_model *new_model = new svm_model();
 
@@ -209,11 +209,11 @@ class NodeSvm : public Nan::ObjectWrap
 
             assert(Nan::Has(obj, str_l).FromJust());
             assert(Nan::Get(obj, str_l).ToLocalChecked()->IsInt32());
-            new_model->l = Nan::Get(obj, str_l).ToLocalChecked()->IntegerValue();
+            new_model->l = Nan::Get(obj, str_l).ToLocalChecked()->IntegerValue(Nan::GetCurrentContext()).FromJust();
 
             Local<String> str_nr_class = Nan::New<String>("nrClass").ToLocalChecked();
 
-            new_model->nr_class = Nan::Get(obj, str_nr_class).ToLocalChecked()->IntegerValue();
+            new_model->nr_class = Nan::Get(obj, str_nr_class).ToLocalChecked()->IntegerValue(Nan::GetCurrentContext()).FromJust();
             unsigned int n = new_model->nr_class * (new_model->nr_class-1)/2;
 
             // rho
@@ -227,7 +227,7 @@ class NodeSvm : public Nan::ObjectWrap
             for(unsigned int i=0;i<n;i++){
                 Local<Value> elt = rho->Get(i);
                 assert(elt->IsNumber());
-                new_model->rho[i] = elt->NumberValue();
+                new_model->rho[i] = elt->NumberValue(Nan::GetCurrentContext()).FromJust();
             }
 
             // classes
@@ -240,7 +240,7 @@ class NodeSvm : public Nan::ObjectWrap
                 for(int i=0;i<new_model->nr_class;i++){
                     Local<Value> elt = labels->Get(i);
                     assert(elt->IsInt32());
-                    new_model->label[i] = elt->IntegerValue();
+                    new_model->label[i] = elt->IntegerValue(Nan::GetCurrentContext()).FromJust();
                 }
                 // nSV
 
@@ -253,7 +253,7 @@ class NodeSvm : public Nan::ObjectWrap
                 for (int i=0;i<new_model->nr_class;i++){
                     Local<Value> elt = nbSupportVectors->Get(i);
                     assert(elt->IsInt32());
-                    new_model->nSV[i] = elt->IntegerValue();
+                    new_model->nSV[i] = elt->IntegerValue(Nan::GetCurrentContext()).FromJust();
                 }
             }
 
@@ -267,7 +267,7 @@ class NodeSvm : public Nan::ObjectWrap
                 for(unsigned int i=0;i<n;i++){
                     Local<Value> elt = probA->Get(i);
                     assert(elt->IsNumber());
-                    new_model->probA[i] = elt->NumberValue();
+                    new_model->probA[i] = elt->NumberValue(Nan::GetCurrentContext()).FromJust();
                 }
             }
 
@@ -281,7 +281,7 @@ class NodeSvm : public Nan::ObjectWrap
                 for(unsigned int i=0;i<n;i++){
                     Local<Value> elt = probB->Get(i);
                     assert(elt->IsNumber());
-                    new_model->probB[i] = elt->NumberValue();
+                    new_model->probB[i] = elt->NumberValue(Nan::GetCurrentContext()).FromJust();
                 }
             }
 
@@ -310,12 +310,12 @@ class NodeSvm : public Nan::ObjectWrap
                 new_model->SV[i] = new svm_node[x->Length() + 1];
                 for(unsigned j = 0; j < x->Length(); ++j) {
                     new_model->SV[i][j].index = j+1;
-                    new_model->SV[i][j].value = x->Get(j)->NumberValue();
+                    new_model->SV[i][j].value = x->Get(j)->NumberValue(Nan::GetCurrentContext()).FromJust();
                 }
                 new_model->SV[i][x->Length()].index = -1;
 
                 for(int j=0; j < m ;j++)
-                    new_model->sv_coef[j][i] = y->Get(j)->NumberValue();
+                    new_model->sv_coef[j][i] = y->Get(j)->NumberValue(Nan::GetCurrentContext()).FromJust();
             }
 
 
@@ -362,13 +362,13 @@ class NodeSvm : public Nan::ObjectWrap
                 Local<Array> ex = dataset->Get(i).As<Array>();
                 Local<Array> x = ex->Get(0).As<Array>();
                 for (unsigned j = 0; j < x->Length(); ++j) {
-                    double xi = x->Get(j)->NumberValue();
+                    double xi = x->Get(j)->NumberValue(Nan::GetCurrentContext()).FromJust();
                     prob->x[i][j].index = j+1;
                     prob->x[i][j].value = xi;
                 }
                 prob->x[i][x->Length()].index = -1;
 
-                double y = ex->Get(1)->NumberValue();
+                double y = ex->Get(1)->NumberValue(Nan::GetCurrentContext()).FromJust();
                 prob->y[i] = y;
             }
             trainingProblem = prob;
@@ -388,7 +388,7 @@ class NodeSvm : public Nan::ObjectWrap
 
         void getSvmNodes(Local<Array> inputs, svm_node *nodes){
             for (unsigned j=0; j < inputs->Length(); j++){
-                double xi = inputs->Get(j)->NumberValue();
+                double xi = inputs->Get(j)->NumberValue(Nan::GetCurrentContext()).FromJust();
                 nodes[j].index = j+1;
                 nodes[j].value = xi;
             }
