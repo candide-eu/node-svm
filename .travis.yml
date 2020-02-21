@@ -1,16 +1,17 @@
 language: node_js
 sudo: false
-env:
-  CXX=g++-4.8
+env: CXX=g++-4.8
 node_js:
   - "4"
   - "8"
   - "10"
+  - "11"
+  - "12"
 script:
   - grunt travis
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - g++-4.8
+      - g++-4.8
